@@ -15,8 +15,10 @@ app.use(helmet.dnsPrefetchControl()); // Don't want this on mine as it stops fet
 app.use(helmet.noCache()); // Makes users download newest version. Caching has performance benefits, which you will lose, so only use this option when there is a real need.
 app.use(
   helmet.contentSecurityPolicy({
-    defaultSrc: ["'self'"],
-    scriptSrc: ["'self'", "trusted-cdn.com"],
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "trusted-cdn.com"],
+    },
   })
 );
 
