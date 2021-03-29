@@ -4,7 +4,7 @@ const app = express();
 
 app.use(helmet());
 
-helmet.hidePoweredBy();
+app.use(helmet.hidePoweredBy());
 
 // don't edit below this note
 module.exports = app;
