@@ -11,6 +11,7 @@ app.use(xssFilter());
 app.use(noSniff());
 app.use(helmet.ieNoOpen());
 app.use(helmet.hsts({ maxAge: ninetyDaysInSeconds, force: true }));
+app.use(helmet.dnsPrefetchControl());
 
 // don't edit below this note
 module.exports = app;
