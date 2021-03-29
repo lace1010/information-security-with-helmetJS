@@ -3,25 +3,27 @@ const { xssFilter, noSniff, contentSecurityPolicy } = require("helmet");
 const helmet = require("helmet");
 const app = express();
 
-let ninetyDaysInSeconds = 90 * 24 * 60 * 60;
+/* app.use(helmet()) will automatically include all the middleware introduced above, except noCache(), and contentSecurityPolicy(), 
+but these can be enabled if necessary. You can also disable or configure any other middleware individually, using a configuration object.
 
-app.use(helmet.hidePoweredBy());
-app.use(helmet.frameguard({ action: "deny" }));
-app.use(xssFilter());
-app.use(noSniff());
-app.use(helmet.ieNoOpen());
-app.use(helmet.hsts({ maxAge: ninetyDaysInSeconds, force: true }));
-app.use(helmet.dnsPrefetchControl()); // Don't want this on mine as it stops fetching links for security reasons at the sake of performance (mainly needed for big websites with millions of viewers)
-app.use(helmet.noCache()); // Makes users download newest version. Caching has performance benefits, which you will lose, so only use this option when there is a real need.
-app.use(
-  helmet.contentSecurityPolicy({
+Example:
+
+app.use(helmet({
+  frameguard: {         // configure
+    action: 'deny'
+  },
+  contentSecurityPolicy: {    // enable and configure
     directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "trusted-cdn.com"],
-    },
-  })
-);
+      defaultSrc: ["self"],
+      styleSrc: ['style.com'],
+    }
+  },
+  dnsPrefetchControl: false     // disable
+}))
+We introduced each middleware separately for teaching purposes and for ease of testing. Using the ‘parent’ helmet() middleware is easy to 
+implement in a real project. */
 
+app.use(helmet());
 // don't edit below this note
 module.exports = app;
 var api = require("./server.js");
