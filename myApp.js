@@ -3,11 +3,14 @@ const { xssFilter, noSniff } = require("helmet");
 const helmet = require("helmet");
 const app = express();
 
+let ninetyDaysInSeconds = 90 * 24 * 60 * 60;
+
 app.use(helmet.hidePoweredBy());
 app.use(helmet.frameguard({ action: "deny" }));
 app.use(xssFilter());
 app.use(noSniff());
 app.use(helmet.ieNoOpen());
+app.use(helmet.hsts({ maxAge: ninetyDaysInSeconds, force: true }));
 
 // don't edit below this note
 module.exports = app;
